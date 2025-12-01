@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DataManager {
-    private Set<PlayerData> dataSet = new HashSet<>();
+    private final Set<PlayerData> dataSet = new HashSet<>();
 
     public DataManager() {
         Bukkit.getOnlinePlayers().forEach(this::add);

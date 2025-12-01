@@ -5,9 +5,11 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.example.azheng.anticheat.checks.KillauraA;
+import org.example.azheng.anticheat.checks.combat.KillauraA;
+import org.example.azheng.anticheat.checks.movement.NoFall;
 import org.example.azheng.anticheat.data.DataManager;
 import org.example.azheng.anticheat.listeners.JoinLeaveListener;
+import org.example.azheng.anticheat.listeners.MoveListener;
 
 public final class Anticheat extends JavaPlugin {
 
@@ -25,8 +27,10 @@ public final class Anticheat extends JavaPlugin {
         PacketEvents.getAPI().init();
         dataManager = new DataManager();
         Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
+        Bukkit.getPluginManager().registerEvents(new MoveListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(
                 new KillauraA("Aura (A)"), PacketListenerPriority.NORMAL);
+        Bukkit.getPluginManager().registerEvents(new NoFall("NoFall"), this);
     }
 
     @Override

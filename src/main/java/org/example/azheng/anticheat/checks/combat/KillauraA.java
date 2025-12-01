@@ -1,10 +1,11 @@
-package org.example.azheng.anticheat.checks;
+package org.example.azheng.anticheat.checks.combat;
 
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import org.example.azheng.anticheat.Anticheat;
+import org.example.azheng.anticheat.checks.Check;
 import org.example.azheng.anticheat.data.PlayerData;
 
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public class KillauraA extends Check implements PacketListener {
         super(name);
     }
 
-    private HashSet<PacketTypeCommon> desiredTypes = new HashSet<>(Arrays.asList(
+    private final HashSet<PacketTypeCommon> desiredTypes = new HashSet<>(Arrays.asList(
             PacketType.Play.Client.PLAYER_FLYING,
             PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION,
             PacketType.Play.Client.PLAYER_POSITION,

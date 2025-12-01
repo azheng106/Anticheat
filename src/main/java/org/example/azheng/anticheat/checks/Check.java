@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 public abstract class Check {
     // Create an abstract "base" check class that other checks can extend from
-    private String name;
+    private final String name;
 
     public Check(String name) {
         this.name = name;
