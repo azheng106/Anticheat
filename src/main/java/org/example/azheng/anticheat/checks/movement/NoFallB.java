@@ -19,6 +19,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class NoFallB extends Check implements Listener {
+    public NoFallB(String name, boolean enabled) {
+        super(name, enabled);
+    }
 
     private static final double MIN_FALL_DISTANCE = 3.0; // blocks before damage
     private static final long DAMAGE_WAIT_MS = 500;      // how long we wait for fall damage
@@ -30,11 +33,8 @@ public class NoFallB extends Check implements Listener {
         long expectDamageSince;
     }
 
+    // UUID = unique ID assigned to each Minecraft player
     private final Map<UUID, FallData> fallDataMap = new HashMap<>();
-
-    public NoFallB(String name, boolean enabled) {
-        super(name, enabled);
-    }
 
     private FallData getData(Player p) {
         return fallDataMap.computeIfAbsent(p.getUniqueId(), id -> new FallData());
@@ -62,8 +62,7 @@ public class NoFallB extends Check implements Listener {
 
         Block currentBlock = to.clone().subtract(0, 0.05, 0).getBlock();
 
-        // If we're in a soft landing block (water, slime, cobweb, etc),
-        // treat this as "fall cancelled" and reset.
+        // If landing on a soft block, cancel the check and reset FallData
         if (isSoftLandingBlock(currentBlock)) {
             fd.fallDistance = 0;
             fd.expectingDamage = false;
@@ -81,11 +80,10 @@ public class NoFallB extends Check implements Listener {
             fd.fallDistance -= dy;
         }
 
-        // Landing detection: in air last tick, now on solid ground
+        // On ground now, and not in ground last tick means we just landed
         if (serverGround && !wasGround) {
-            // We just landed
+            // just landed, and should take fall damage soon if we fell over MIN_FALL_DIST blocks
             if (fd.fallDistance >= MIN_FALL_DISTANCE) {
-                // We should receive a FALL damage event very soon
                 fd.expectingDamage = true;
                 fd.expectDamageSince = System.currentTimeMillis();
             }
@@ -107,30 +105,6 @@ public class NoFallB extends Check implements Listener {
         fd.wasOnGround = serverGround;
     }
 
-    /**
-     * Server-side ground check using landing block
-     */
-    private boolean isOnGroundServer(Location loc) {
-        // Slightly below feet to avoid rounding issues
-        Block below = loc.clone().subtract(0, 0.05, 0).getBlock();
-        Material type = below.getType();
-
-        if (type == Material.AIR) return false;
-
-        // Ignore legit "soft landing" blocks that prevent damage
-        if (type == Material.WATER
-                || type == Material.LAVA
-                || type == Material.SLIME_BLOCK
-                || type == Material.LADDER
-                || type == Material.VINE
-                || type == Material.WEB
-                || type == Material.HAY_BLOCK) {
-            return false;
-        }
-
-        return type.isSolid();
-    }
-
     private boolean isSoftLandingBlock(Block block) {
         Material type = block.getType();
 
@@ -141,6 +115,23 @@ public class NoFallB extends Check implements Listener {
                 || type == Material.SLIME_BLOCK
                 || type == Material.HAY_BLOCK;
 
+    }
+
+    private boolean isOnGroundServer(Location loc) {
+        Block below = loc.clone().subtract(0, 0.05, 0).getBlock();
+        Material type = below.getType();
+
+        if (type == Material.AIR) return false;
+
+        if (type == Material.WATER
+                || type == Material.STATIONARY_WATER
+                || type == Material.SLIME_BLOCK
+                || type == Material.WEB
+                || type == Material.HAY_BLOCK) {
+            return false;
+        }
+
+        return type.isSolid();
     }
 
     @EventHandler

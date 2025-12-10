@@ -31,7 +31,6 @@ public class NoFallA extends Check implements Listener {
 
         boolean clientGround = p.isOnGround();
         boolean serverGround = e.getTo().getY() % blockGCD < 0.0001;
-        //Bukkit.getPlayer("Aquaponics").sendMessage("c=" + clientGround + ", s=" + serverGround);
 
         if (clientGround != data.lastServerGround) {
             if (buffer++ > 1 && (!data.nearGround || !data.lastServerGround)) {

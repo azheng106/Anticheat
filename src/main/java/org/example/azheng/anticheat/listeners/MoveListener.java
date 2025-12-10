@@ -36,7 +36,6 @@ public class MoveListener implements Listener {
         if (data == null) {
             return;
         }
-        p.sendMessage("B");
 
         data.velXTicks = (int) Math.round(e.getVelocity().getX() * 100);
         data.velYTicks = (int) Math.round(e.getVelocity().getY() * 100);
