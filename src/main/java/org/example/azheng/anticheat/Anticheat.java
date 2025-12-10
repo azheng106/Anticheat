@@ -6,7 +6,8 @@ import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.azheng.anticheat.checks.combat.KillauraA;
-import org.example.azheng.anticheat.checks.movement.NoFall;
+import org.example.azheng.anticheat.checks.movement.NoFallB;
+import org.example.azheng.anticheat.checks.movement.NoFallA;
 import org.example.azheng.anticheat.data.DataManager;
 import org.example.azheng.anticheat.listeners.JoinLeaveListener;
 import org.example.azheng.anticheat.listeners.MoveListener;
@@ -21,6 +22,7 @@ public final class Anticheat extends JavaPlugin {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
         PacketEvents.getAPI().load();
     }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -28,9 +30,12 @@ public final class Anticheat extends JavaPlugin {
         dataManager = new DataManager();
         Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
         Bukkit.getPluginManager().registerEvents(new MoveListener(), this);
+
+        // Checks
         PacketEvents.getAPI().getEventManager().registerListener(
-                new KillauraA("Aura (A)"), PacketListenerPriority.NORMAL);
-        Bukkit.getPluginManager().registerEvents(new NoFall("NoFall"), this);
+                new KillauraA("Aura (A)", true), PacketListenerPriority.NORMAL);
+        Bukkit.getPluginManager().registerEvents(new NoFallA("NoFall (A)", true), this);
+        Bukkit.getPluginManager().registerEvents(new NoFallB("NoFall (B)", true), this);
     }
 
     @Override

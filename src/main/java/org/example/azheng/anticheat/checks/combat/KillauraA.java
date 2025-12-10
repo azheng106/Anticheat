@@ -12,9 +12,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class KillauraA extends Check implements PacketListener {
-    public KillauraA(String name) {
-        super(name);
+    public KillauraA(String name, boolean enabled) {
+        super(name, enabled);
     }
+
+    private int buffer = 0;
 
     private final HashSet<PacketTypeCommon> desiredTypes = new HashSet<>(Arrays.asList(
             PacketType.Play.Client.PLAYER_FLYING,
@@ -30,11 +32,11 @@ public class KillauraA extends Check implements PacketListener {
         if (desiredTypes.contains(e.getPacketType())) {
             if (e.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
                 if (System.currentTimeMillis() - data.lastFlying < 5) {
-                    if (data.killauraAVerbose++ > 10) {
+                    if (buffer++ > 10) {
                         flag(e.getPlayer(), "flying packet sent too late");
                     }
                 } else {
-                    data.killauraAVerbose = 0;
+                    buffer = 0;
                 }
             } else {
                 data.lastFlying = System.currentTimeMillis();

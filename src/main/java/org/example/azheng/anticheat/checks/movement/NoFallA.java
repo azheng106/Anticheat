@@ -1,5 +1,10 @@
 package org.example.azheng.anticheat.checks.movement;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,26 +13,30 @@ import org.example.azheng.anticheat.Anticheat;
 import org.example.azheng.anticheat.checks.Check;
 import org.example.azheng.anticheat.data.PlayerData;
 
-public class NoFall extends Check implements Listener {
-    public NoFall(String name) {
-        super(name);
+public class NoFallA extends Check implements Listener {
+    public NoFallA(String name, boolean enabled) {
+        super(name, enabled);
     }
 
-    private static double blockGCD = 1/64.;
+    private static final double blockGCD = 1/64.;
     private int buffer = 0;
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
+        if (p.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
         PlayerData data = Anticheat.instance.dataManager.getPlayerData(p);
 
         boolean clientGround = p.isOnGround();
         boolean serverGround = e.getTo().getY() % blockGCD < 0.0001;
+        //Bukkit.getPlayer("Aquaponics").sendMessage("c=" + clientGround + ", s=" + serverGround);
 
         if (clientGround != data.lastServerGround) {
-            if (buffer++ > 1 || !data.nearGround || !data.lastServerGround) {
+            if (buffer++ > 1 && (!data.nearGround || !data.lastServerGround)) {
                 // False positives will occur without buffer unless player isn't near ground or lastServerGround false
-                flag(p, "c=" + clientGround + " s=" + data.lastServerGround);
+                flag(p, "c=" + clientGround, " s=" + data.lastServerGround);
             }
         } else if (buffer > 0) buffer--;
 
