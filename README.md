@@ -1,3 +1,4 @@
+This is a plugin to detect cheaters in Minecraft.
 YouTube series: https://youtu.be/2g_8jg9vw3Q
 
 Check explanations:
