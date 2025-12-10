@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class KillauraA extends Check implements PacketListener {
-    public KillauraA(String name, boolean enabled) {
-        super(name, enabled);
+    public KillauraA(String name) {
+        super(name);
     }
 
     private int buffer = 0;

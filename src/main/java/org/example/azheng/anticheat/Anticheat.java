@@ -33,9 +33,9 @@ public final class Anticheat extends JavaPlugin {
 
         // Checks
         PacketEvents.getAPI().getEventManager().registerListener(
-                new KillauraA("Aura (A)", true), PacketListenerPriority.NORMAL);
-        Bukkit.getPluginManager().registerEvents(new NoFallA("NoFall (A)", true), this);
-        Bukkit.getPluginManager().registerEvents(new NoFallB("NoFall (B)", true), this);
+                new KillauraA("Aura (A)"), PacketListenerPriority.NORMAL);
+        Bukkit.getPluginManager().registerEvents(new NoFallA("NoFall (A)"), this);
+        Bukkit.getPluginManager().registerEvents(new NoFallB("NoFall (B)"), this);
     }
 
     @Override

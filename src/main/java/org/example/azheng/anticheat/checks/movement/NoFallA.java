@@ -1,10 +1,6 @@
 package org.example.azheng.anticheat.checks.movement;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,8 +10,8 @@ import org.example.azheng.anticheat.checks.Check;
 import org.example.azheng.anticheat.data.PlayerData;
 
 public class NoFallA extends Check implements Listener {
-    public NoFallA(String name, boolean enabled) {
-        super(name, enabled);
+    public NoFallA(String name) {
+        super(name);
     }
 
     private static final double blockGCD = 1/64.;

@@ -1,6 +1,5 @@
 package org.example.azheng.anticheat.checks.movement;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,11 +15,10 @@ import org.example.azheng.anticheat.data.PlayerData;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class NoFallB extends Check implements Listener {
-    public NoFallB(String name, boolean enabled) {
-        super(name, enabled);
+    public NoFallB(String name) {
+        super(name);
     }
 
     private static final double MIN_FALL_DISTANCE = 3.0; // blocks before damage
@@ -136,11 +134,10 @@ public class NoFallB extends Check implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player p)) return;
 
         if (event.getCause() != EntityDamageEvent.DamageCause.FALL) return;
 
-        Player p = (Player) event.getEntity();
         FallData fd = getData(p);
 
         // If player takes fall damage, set expectingDamage to false
