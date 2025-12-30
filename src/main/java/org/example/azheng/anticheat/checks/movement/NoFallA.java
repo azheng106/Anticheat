@@ -3,18 +3,17 @@ package org.example.azheng.anticheat.checks.movement;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.example.azheng.anticheat.Anticheat;
 import org.example.azheng.anticheat.checks.Check;
 import org.example.azheng.anticheat.data.PlayerData;
 
-public class NoFallA extends Check implements Listener {
+public class NoFallA extends Check {
     public NoFallA(String name) {
         super(name);
     }
 
-    private static final double blockGCD = 1/64.;
+    public static final double blockGCD = 1/64.;
     private int buffer = 0;
 
     @EventHandler

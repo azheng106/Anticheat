@@ -1,10 +1,12 @@
 package org.example.azheng.anticheat.checks;
 
+import com.github.retrooper.packetevents.event.PacketListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
-public abstract class Check {
+public abstract class Check implements Listener, PacketListener {
     // Create an abstract "base" check class that other checks can extend from
     private final String name;
 

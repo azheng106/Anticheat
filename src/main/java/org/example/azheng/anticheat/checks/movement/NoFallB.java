@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.example.azheng.anticheat.Anticheat;
@@ -16,12 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class NoFallB extends Check implements Listener {
+public class NoFallB extends Check {
     public NoFallB(String name) {
         super(name);
     }
 
-    private static final double MIN_FALL_DISTANCE = 3.0; // blocks before damage
+    private static final double MIN_FALL_DISTANCE = 4.0; // blocks before damage
     private static final long DAMAGE_WAIT_MS = 500;      // how long we wait for fall damage
 
     private static class FallData {
@@ -30,6 +29,9 @@ public class NoFallB extends Check implements Listener {
         boolean expectingDamage;
         long expectDamageSince;
     }
+
+    // TODO: fix false flag - when player is holding block w/ sword while jumping down a slope, it false flags
+    // TODO: fix false flag - when player is sprint jumping and jumps onto somewhere 2 blocks lower
 
     // UUID = unique ID assigned to each Minecraft player
     private final Map<UUID, FallData> fallDataMap = new HashMap<>();

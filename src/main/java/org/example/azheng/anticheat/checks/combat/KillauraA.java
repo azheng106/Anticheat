@@ -1,6 +1,5 @@
 package org.example.azheng.anticheat.checks.combat;
 
-import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
@@ -11,7 +10,7 @@ import org.example.azheng.anticheat.data.PlayerData;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class KillauraA extends Check implements PacketListener {
+public class KillauraA extends Check {
     public KillauraA(String name) {
         super(name);
     }
@@ -29,18 +28,19 @@ public class KillauraA extends Check implements PacketListener {
     @Override
     public void onPacketReceive(PacketReceiveEvent e) {
         PlayerData data = Anticheat.instance.dataManager.getPlayerData(e.getPlayer());
-        if (desiredTypes.contains(e.getPacketType())) {
-            if (e.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
-                if (System.currentTimeMillis() - data.lastFlying < 5) {
-                    if (buffer++ > 10) {
-                        flag(e.getPlayer(), "flying packet sent too late");
-                    }
-                } else {
-                    buffer = 0;
+        if (!desiredTypes.contains(e.getPacketType())) return;
+
+        if (e.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
+            if (System.currentTimeMillis() - data.lastFlying < 5) {
+                if (buffer++ > 10) {
+                    flag(e.getPlayer(), "flying packet sent too late");
                 }
             } else {
-                data.lastFlying = System.currentTimeMillis();
+                buffer = 0;
             }
+        } else {
+            data.lastFlying = System.currentTimeMillis();
         }
+
     }
 }
