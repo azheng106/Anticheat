@@ -7,9 +7,12 @@ import com.github.retrooper.packetevents.protocol.player.DiggingAction;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerBlockPlacement;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerDigging;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.example.azheng.anticheat.Anticheat;
 import org.example.azheng.anticheat.checks.Check;
+import org.example.azheng.anticheat.data.PlayerData;
 
 import java.util.*;
 
@@ -20,7 +23,7 @@ public class KillauraB extends Check {
 
     public static class BlockData {
         boolean isBlocking = false;
-
+        long lastUnblock = System.currentTimeMillis();
     }
 
     private final Map<UUID, BlockData> blockDataMap = new HashMap<>();
@@ -36,7 +39,10 @@ public class KillauraB extends Check {
     @Override
     public void onPacketReceive(PacketReceiveEvent e) {
         Player p = e.getPlayer();
+        if (!Bukkit.getOnlinePlayers().contains(p)) return;
+
         BlockData data = getData(p);
+        PlayerData playerData = Anticheat.instance.dataManager.getPlayerData(p);
         PacketTypeCommon type = e.getPacketType();
 
 
@@ -44,28 +50,41 @@ public class KillauraB extends Check {
             WrapperPlayClientPlayerBlockPlacement packet = new WrapperPlayClientPlayerBlockPlacement(e);
 
             if (packet.getBlockPosition().getY() == 4095 && isHoldingSword(p)) {
+                // Blocking sword
                 data.isBlocking = true;
             }
-            //p.sendMessage(String.valueOf(data.isBlocking));
         } else if (type == PacketType.Play.Client.PLAYER_DIGGING) {
             WrapperPlayClientPlayerDigging packet = new WrapperPlayClientPlayerDigging(e);
             if (packet.getAction() == DiggingAction.RELEASE_USE_ITEM && isHoldingSword(p)) {
+                // Unblocking sword
                 data.isBlocking = false;
+                data.lastUnblock = System.currentTimeMillis();
             }
-            //p.sendMessage(String.valueOf(data.isBlocking));
         } else if (type == PacketType.Play.Client.HELD_ITEM_CHANGE) {
+            // Switch item slot
             data.isBlocking = false;
-            //p.sendMessage(String.valueOf(data.isBlocking));
+            data.lastUnblock = System.currentTimeMillis();
         } else if (type == PacketType.Play.Client.INTERACT_ENTITY) {
             WrapperPlayClientInteractEntity packet = new WrapperPlayClientInteractEntity(e);
-            //p.sendMessage(String.valueOf(packet.getAction()));
+
             if (packet.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
+                long timeSinceLastUnblock = System.currentTimeMillis() - data.lastUnblock;
+
                 if (data.isBlocking) {
-                    flag(p, "autoblock");
+                    playerData.auraBBuffer++;
+                    if (playerData.auraBBuffer > 3) {
+                        flag(p, "attacking while blocking");
+                    }
+                } else if (timeSinceLastUnblock < 2) {
+                    playerData.auraBBuffer++;
+                    if (playerData.auraBBuffer > 1) {
+                        flag(p, "unblocked <2ms before attacking");
+                    }
+                } else {
+                    playerData.auraBBuffer = 0;
                 }
             }
-            //p.sendMessage(String.valueOf(data.isBlocking));
-        } 
+        }
     }
 
     public static boolean isHoldingSword(Player p) {

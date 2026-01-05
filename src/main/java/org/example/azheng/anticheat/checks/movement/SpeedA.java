@@ -19,8 +19,6 @@ public class SpeedA extends Check {
         super(name);
     }
 
-    private int buffer = 0;
-
     // Movement packets
     private final HashSet<PacketTypeCommon> desiredTypes = new HashSet<>(Arrays.asList(
             PacketType.Play.Client.PLAYER_FLYING,
@@ -73,12 +71,12 @@ public class SpeedA extends Check {
         if (data.underBlockTicks > 0 && deltaY != 0.0) threshold *= 2.0f; // directly under a block while spamming jump makes u go much faster
 
         if (deltaXZ > threshold) {
-            buffer += 1;
-            if (buffer > 13) {
-                flag(p, String.format("dxz=%.3f, threshold=%.3f, b=" + buffer, deltaXZ, threshold));
+            data.speedABuffer += 1;
+            if (data.speedABuffer > 13) {
+                flag(p, String.format("dxz=%.3f, threshold=%.3f, b=" + data.speedABuffer, deltaXZ, threshold));
             }
         } else {
-            buffer = Math.max(0, buffer -= 1);
+            data.speedABuffer = Math.max(0, data.speedABuffer -= 1);
         }
 
         data.lastX = x;

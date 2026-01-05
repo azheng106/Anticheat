@@ -31,6 +31,11 @@ public class PlayerData {
     public boolean lastServerGround = true;
     public boolean nearGround;
 
+    // Buffers
+    public int auraABuffer = 0, auraBBuffer = 0;
+    public int nofallABuffer = 0;
+    public int speedABuffer = 0;
+
     public boolean isVelocityTaken() {
         return velXTicks > 0 || velYTicks > 0 || velZTicks > 0;
     }
