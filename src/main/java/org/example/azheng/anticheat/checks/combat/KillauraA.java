@@ -40,6 +40,7 @@ public class KillauraA extends Check {
                 data.auraABuffer = 0;
             }
         } else {
+            //p.sendMessage(String.valueOf(System.currentTimeMillis() - data.lastFlying));
             data.lastFlying = System.currentTimeMillis();
         }
 

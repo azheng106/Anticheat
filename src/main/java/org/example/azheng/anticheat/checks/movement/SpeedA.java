@@ -53,13 +53,6 @@ public class SpeedA extends Check {
             return;
         }
 
-        double x = flying.getLocation().getX();
-        double z = flying.getLocation().getZ();
-        double y = flying.getLocation().getY();
-
-        double deltaXZ = Math.hypot(x - data.lastX, z - data.lastZ);
-        double deltaY = y - data.lastY;
-
         float threshold = data.clientGround ? 0.31f : 0.341f;
         int speedLevel = PlayerUtils.getPotionEffectLevel(p, PotionEffectType.SPEED);
 
@@ -68,19 +61,15 @@ public class SpeedA extends Check {
 
         if (data.onStairSlab) threshold *= 1.8f;
         if (data.iceTicks > 0 && data.groundTicks < 5) threshold *= 1.7f;
-        if (data.underBlockTicks > 0 && deltaY != 0.0) threshold *= 2.0f; // directly under a block while spamming jump makes u go much faster
+        if (data.underBlockTicks > 0 && data.deltaY != 0.0) threshold *= 2.0f; // directly under a block while spamming jump makes u go much faster
 
-        if (deltaXZ > threshold) {
+        if (data.deltaXZ > threshold) {
             data.speedABuffer += 1;
             if (data.speedABuffer > 13) {
-                flag(p, String.format("dxz=%.3f, threshold=%.3f, b=" + data.speedABuffer, deltaXZ, threshold));
+                flag(p, String.format("dxz=%.3f, threshold=%.3f, b=" + data.speedABuffer, data.deltaXZ, threshold));
             }
         } else {
             data.speedABuffer = Math.max(0, data.speedABuffer -= 1);
         }
-
-        data.lastX = x;
-        data.lastY = y;
-        data.lastZ = z;
     }
 }

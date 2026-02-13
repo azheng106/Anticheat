@@ -5,14 +5,19 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.example.azheng.anticheat.checks.Check;
+import org.example.azheng.anticheat.checks.CheckManager;
+import org.example.azheng.anticheat.checks.combat.AimA;
 import org.example.azheng.anticheat.checks.combat.KillauraA;
 import org.example.azheng.anticheat.checks.combat.KillauraB;
 import org.example.azheng.anticheat.checks.movement.NoFallB;
 import org.example.azheng.anticheat.checks.movement.NoFallA;
 import org.example.azheng.anticheat.checks.movement.SpeedA;
+import org.example.azheng.anticheat.checks.packet.Timer;
 import org.example.azheng.anticheat.data.DataManager;
 import org.example.azheng.anticheat.listeners.JoinLeaveListener;
 import org.example.azheng.anticheat.listeners.MoveListener;
+import org.example.azheng.anticheat.listeners.RotationListener;
 
 public final class Anticheat extends JavaPlugin {
 
@@ -30,18 +35,15 @@ public final class Anticheat extends JavaPlugin {
         instance = this;
         PacketEvents.getAPI().init();
         dataManager = new DataManager();
-        Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
-        Bukkit.getPluginManager().registerEvents(new MoveListener(), this);
+        CheckManager checkManager = new CheckManager(this);
 
-        // Checks
+        Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(
-                new KillauraA("Aura (A)"), PacketListenerPriority.NORMAL);
+                new RotationListener(), PacketListenerPriority.LOWEST);
         PacketEvents.getAPI().getEventManager().registerListener(
-                new KillauraB("Aura (B)"), PacketListenerPriority.NORMAL);
-        PacketEvents.getAPI().getEventManager().registerListener(
-                new SpeedA("Speed (A)"), PacketListenerPriority.NORMAL);
-        Bukkit.getPluginManager().registerEvents(new NoFallA("NoFall (A)"), this);
-        Bukkit.getPluginManager().registerEvents(new NoFallB("NoFall (B)"), this);
+                new MoveListener(), PacketListenerPriority.LOWEST);
+
+        checkManager.registerChecks();
     }
 
     @Override

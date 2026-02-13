@@ -55,8 +55,10 @@ public class KillauraB extends Check {
             }
         } else if (type == PacketType.Play.Client.PLAYER_DIGGING) {
             WrapperPlayClientPlayerDigging packet = new WrapperPlayClientPlayerDigging(e);
-            if (packet.getAction() == DiggingAction.RELEASE_USE_ITEM && isHoldingSword(p)) {
-                // Unblocking sword
+            DiggingAction action = packet.getAction();
+            if (isHoldingSword(p) &&
+                    (action == DiggingAction.RELEASE_USE_ITEM || action == DiggingAction.DROP_ITEM)) {
+                // Unblocking sword or dropping their sword while blocking
                 data.isBlocking = false;
                 data.lastUnblock = System.currentTimeMillis();
             }
@@ -77,7 +79,7 @@ public class KillauraB extends Check {
                     }
                 } else if (timeSinceLastUnblock < 2) {
                     playerData.auraBBuffer++;
-                    if (playerData.auraBBuffer > 1) {
+                    if (playerData.auraBBuffer > 2) {
                         flag(p, "unblocked <2ms before attacking");
                     }
                 } else {
