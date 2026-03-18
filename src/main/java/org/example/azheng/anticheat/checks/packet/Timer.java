@@ -40,7 +40,7 @@ public class Timer extends Check {
 
         if (newBalance > data.threshold) {
             data.threshold += INCREMENT; // Up the threshold every flag to prevent spamming the check
-            flag(p, "too many flying packets (timer)");
+            flag(p, "too many flying packets");
         }
         data.timerBalance = Math.max(-800, newBalance); // Clamp from below to prevent accumulating a large negative balance w/ a timer speed < 1
         p.sendMessage("Balance: " + ChatColor.GREEN + data.timerBalance);
