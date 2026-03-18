@@ -8,7 +8,6 @@ import org.example.azheng.anticheat.checks.combat.AimA;
 import org.example.azheng.anticheat.checks.combat.KillauraA;
 import org.example.azheng.anticheat.checks.combat.KillauraB;
 import org.example.azheng.anticheat.checks.movement.NoFallA;
-import org.example.azheng.anticheat.checks.movement.NoFallB;
 import org.example.azheng.anticheat.checks.movement.SpeedA;
 import org.example.azheng.anticheat.checks.packet.InvalidPitch;
 import org.example.azheng.anticheat.checks.packet.Timer;
@@ -33,8 +32,12 @@ public class CheckManager {
         PacketEvents.getAPI().getEventManager().registerListener(
                 new SpeedA("Speed (A)"), PacketListenerPriority.NORMAL);
         Bukkit.getPluginManager().registerEvents(new NoFallA("NoFall (A)"), plugin);
-        Bukkit.getPluginManager().registerEvents(new NoFallB("NoFall (B)"), plugin);
+        //Bukkit.getPluginManager().registerEvents(new NoFallB("NoFall (B)"), plugin);
 
-
+        // PACKET
+        PacketEvents.getAPI().getEventManager().registerListener(
+                new Timer("Timer"), PacketListenerPriority.NORMAL);
+        PacketEvents.getAPI().getEventManager().registerListener(
+                new InvalidPitch("InvalidPitch"), PacketListenerPriority.NORMAL);
     }
 }

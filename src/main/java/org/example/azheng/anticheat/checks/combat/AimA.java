@@ -49,7 +49,6 @@ public class AimA extends Check {
         } else {
             data.aimABuffer = Math.max(0, data.aimABuffer - 1);
         }
-        p.sendMessage("buffer: " + data.aimABuffer);
 
         if (data.aimABuffer > 20) {
             flag(p, "Rotation amount during attacking is not a multiple of rotation GCD");

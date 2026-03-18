@@ -1,6 +1,5 @@
 package org.example.azheng.anticheat.data;
 
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

@@ -3,8 +3,6 @@ package org.example.azheng.anticheat.data;
 import org.bukkit.entity.Player;
 import org.example.azheng.anticheat.utils.EvictingList;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.LinkedList;
 
 public class PlayerData {
@@ -21,7 +19,6 @@ public class PlayerData {
     public double lastX, lastY, lastZ;
     public boolean onGround, clientGround, lastClientGround;
     public double deltaXZ, deltaY;
-    public boolean inventoryOpen = false;
 
     public boolean inLiquid, onStairSlab, onIce, onClimbable, onSlime, underBlock;
     public int liquidTicks, iceTicks, slimeTicks, underBlockTicks;
@@ -49,6 +46,9 @@ public class PlayerData {
     // Timer
     public long lastMs = System.currentTimeMillis();
     public int threshold = 250;
+//    public long lastWindowStart = System.currentTimeMillis();
+//    public int timerBuffer = 0;
+//    public int flyingsInWindow = 0;
 
     // Buffers
     public int auraABuffer = 0, auraBBuffer = 0;
@@ -56,7 +56,6 @@ public class PlayerData {
     public int speedABuffer = 0;
     public int aimABuffer = 0;
     public long timerBalance = 0;
-    public int invMoveBuffer = 0;
 
     public boolean isVelocityTaken() {
         return velXTicks > 0 || velYTicks > 0 || velZTicks > 0;

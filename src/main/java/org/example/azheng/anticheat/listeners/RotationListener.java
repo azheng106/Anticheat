@@ -8,10 +8,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 import org.bukkit.entity.Player;
 import org.example.azheng.anticheat.Anticheat;
 import org.example.azheng.anticheat.data.PlayerData;
-import org.example.azheng.anticheat.utils.EvictingList;
 import org.example.azheng.anticheat.utils.MathUtils;
-
-import java.util.LinkedList;
 
 public class RotationListener implements PacketListener {
     @Override
