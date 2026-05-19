@@ -20,8 +20,7 @@ public abstract class Check implements Listener, PacketListener {
             formattedInfo.append(str);
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.sendMessage(
-                    ChatColor.AQUA + target.getName() + ChatColor.GRAY + " has failed " +
+            p.sendMessage(ChatColor.AQUA + target.getName() + ChatColor.GRAY + " has failed " +
                     ChatColor.RED + this.name + ChatColor.LIGHT_PURPLE + " (" + formattedInfo + ")");
         }
     }

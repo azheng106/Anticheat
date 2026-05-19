@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 import org.example.azheng.anticheat.checks.combat.AimA;
 import org.example.azheng.anticheat.checks.combat.KillauraA;
 import org.example.azheng.anticheat.checks.combat.KillauraB;
+import org.example.azheng.anticheat.checks.combat.ReachA;
 import org.example.azheng.anticheat.checks.movement.NoFallA;
 import org.example.azheng.anticheat.checks.movement.SpeedA;
 import org.example.azheng.anticheat.checks.packet.InvalidPitch;
@@ -25,8 +26,11 @@ public class CheckManager {
                 new KillauraA("Aura (A)"), PacketListenerPriority.NORMAL);
         PacketEvents.getAPI().getEventManager().registerListener(
                 new KillauraB("Aura (B)"), PacketListenerPriority.NORMAL);
+//        PacketEvents.getAPI().getEventManager().registerListener(
+//                new AimA("Aim (A)"), PacketListenerPriority.NORMAL);
         PacketEvents.getAPI().getEventManager().registerListener(
-                new AimA("Aim (A)"), PacketListenerPriority.NORMAL);
+                new ReachA("Reach (A)"), PacketListenerPriority.NORMAL);
+
 
         // MOVEMENT
         PacketEvents.getAPI().getEventManager().registerListener(

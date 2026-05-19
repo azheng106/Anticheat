@@ -46,9 +46,6 @@ public class PlayerData {
     // Timer
     public long lastMs = System.currentTimeMillis();
     public int threshold = 250;
-//    public long lastWindowStart = System.currentTimeMillis();
-//    public int timerBuffer = 0;
-//    public int flyingsInWindow = 0;
 
     // Buffers
     public int auraABuffer = 0, auraBBuffer = 0;
@@ -56,6 +53,7 @@ public class PlayerData {
     public int speedABuffer = 0;
     public int aimABuffer = 0;
     public long timerBalance = 0;
+    public int reachABuffer = 0;
 
     public boolean isVelocityTaken() {
         return velXTicks > 0 || velYTicks > 0 || velZTicks > 0;
