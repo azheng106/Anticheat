@@ -4,3 +4,7 @@ main: org.example.azheng.anticheat.Anticheat
 api-version: '1.8'
 depend:
   - packetevents
+commands:
+  ping:
+    description: View a player's ping
+    usage: /ping <player>

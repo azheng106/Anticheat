@@ -6,6 +6,7 @@ import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.azheng.anticheat.checks.CheckManager;
+import org.example.azheng.anticheat.commands.PingCommand;
 import org.example.azheng.anticheat.data.DataManager;
 import org.example.azheng.anticheat.listeners.JoinLeaveListener;
 import org.example.azheng.anticheat.listeners.MoveListener;
@@ -36,6 +37,7 @@ public final class Anticheat extends JavaPlugin {
                 new MoveListener(), PacketListenerPriority.LOWEST);
 
         checkManager.registerChecks();
+        getCommand("ping").setExecutor(new PingCommand());
     }
 
     @Override
