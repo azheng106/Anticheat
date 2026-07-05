@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 public abstract class Check implements Listener, PacketListener {
-    // Create an abstract "base" check class that other checks can extend from
     private final String name;
 
     public Check(String name) {

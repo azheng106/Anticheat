@@ -4,13 +4,12 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.example.azheng.anticheat.checks.combat.AimA;
-import org.example.azheng.anticheat.checks.combat.KillauraA;
-import org.example.azheng.anticheat.checks.combat.KillauraB;
-import org.example.azheng.anticheat.checks.combat.ReachA;
+import org.example.azheng.anticheat.checks.combat.*;
 import org.example.azheng.anticheat.checks.movement.NoFallA;
 import org.example.azheng.anticheat.checks.movement.SpeedA;
+import org.example.azheng.anticheat.checks.packet.Blink;
 import org.example.azheng.anticheat.checks.packet.InvalidPitch;
+import org.example.azheng.anticheat.checks.packet.PingSpoof;
 import org.example.azheng.anticheat.checks.packet.Timer;
 
 public class CheckManager {
@@ -22,15 +21,19 @@ public class CheckManager {
 
     public void registerChecks() {
         // COMBAT
-        PacketEvents.getAPI().getEventManager().registerListener(
-                new KillauraA("Aura (A)"), PacketListenerPriority.NORMAL);
+//        PacketEvents.getAPI().getEventManager().registerListener(
+//                new KillauraA("Aura (A)"), PacketListenerPriority.NORMAL);
         PacketEvents.getAPI().getEventManager().registerListener(
                 new KillauraB("Aura (B)"), PacketListenerPriority.NORMAL);
 //        PacketEvents.getAPI().getEventManager().registerListener(
 //                new AimA("Aim (A)"), PacketListenerPriority.NORMAL);
+
+        // Reach (A) is the old check that doesn't accoutn for movement interpolation or lag.
+        // Reach (B) is its replacement
         PacketEvents.getAPI().getEventManager().registerListener(
                 new ReachA("Reach (A)"), PacketListenerPriority.NORMAL);
-
+        PacketEvents.getAPI().getEventManager().registerListener(
+                new ReachB("Reach (B)"), PacketListenerPriority.NORMAL);
 
         // MOVEMENT
         PacketEvents.getAPI().getEventManager().registerListener(
@@ -43,5 +46,9 @@ public class CheckManager {
                 new Timer("Timer"), PacketListenerPriority.NORMAL);
         PacketEvents.getAPI().getEventManager().registerListener(
                 new InvalidPitch("InvalidPitch"), PacketListenerPriority.NORMAL);
+        PacketEvents.getAPI().getEventManager().registerListener(
+                new PingSpoof("PingSpoof"), PacketListenerPriority.NORMAL);
+        PacketEvents.getAPI().getEventManager().registerListener(
+                new Blink("Blink"), PacketListenerPriority.NORMAL);
     }
 }

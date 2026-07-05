@@ -3,7 +3,9 @@ package org.example.azheng.anticheat.data;
 import org.bukkit.entity.Player;
 import org.example.azheng.anticheat.utils.EvictingList;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class PlayerData {
     public PlayerData(Player player) {
@@ -47,6 +49,20 @@ public class PlayerData {
     public long lastMs = System.currentTimeMillis();
     public int threshold = 250;
 
+    // PingSpoof
+    public final Map<Long, Long> keepAliveSendTimes = new HashMap<>(); // id -> send time
+    public long lastKeepAliveRtt = 0;
+    public int flyingSinceKeepAlive = 0;
+    public int pingSpoofBuffer = 0;
+
+    // Blink / FakeLag
+    public long lastFlyingMs = System.currentTimeMillis();
+    public long blinkGap = 0;              // length of the silence preceding a release
+    public long blinkReleaseStart = 0;
+    public int blinkReleaseCount = 0;
+    public boolean watchingRelease = false;
+    public int blinkBuffer = 0;
+
     // Buffers
     public int auraABuffer = 0, auraBBuffer = 0;
     public int nofallABuffer = 0;
@@ -54,6 +70,7 @@ public class PlayerData {
     public int aimABuffer = 0;
     public long timerBalance = 0;
     public int reachABuffer = 0;
+    public double reachBBuffer = 0f;
 
     public boolean isVelocityTaken() {
         return velXTicks > 0 || velYTicks > 0 || velZTicks > 0;

@@ -111,4 +111,10 @@ public class ReflectionUtils {
         }
         return null;
     }
+
+    public static int getPing(Player player) throws NoSuchFieldException, IllegalAccessException {
+        Object entityPlayer = ReflectionUtils.getEntityPlayer(player);
+        Field pingField = entityPlayer.getClass().getField("ping");
+        return pingField.getInt(entityPlayer);
+    }
 }

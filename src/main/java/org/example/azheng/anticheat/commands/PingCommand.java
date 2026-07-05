@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.example.azheng.anticheat.utils.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.sql.Ref;
 
 public class PingCommand implements CommandExecutor {
 
@@ -26,9 +27,7 @@ public class PingCommand implements CommandExecutor {
         }
 
         try {
-            Object entityPlayer = ReflectionUtils.getEntityPlayer(target);
-            Field pingField = entityPlayer.getClass().getField("ping");
-            int ping = pingField.getInt(entityPlayer);
+            int ping = ReflectionUtils.getPing(target);
             sender.sendMessage(ChatColor.AQUA + target.getName() + ChatColor.GRAY
                     + "'s ping: " + ChatColor.GREEN + ping + "ms");
         } catch (Exception e) {

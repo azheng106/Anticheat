@@ -11,11 +11,14 @@ import org.example.azheng.anticheat.data.DataManager;
 import org.example.azheng.anticheat.listeners.JoinLeaveListener;
 import org.example.azheng.anticheat.listeners.MoveListener;
 import org.example.azheng.anticheat.listeners.RotationListener;
+import org.example.azheng.anticheat.utils.ServerTick;
+import org.example.azheng.anticheat.utils.TargetTracker;
 
 public final class Anticheat extends JavaPlugin {
 
     public static Anticheat instance;
     public DataManager dataManager;
+    public TargetTracker targetTracker;
 
     @Override
     public void onLoad() {
@@ -28,6 +31,7 @@ public final class Anticheat extends JavaPlugin {
         instance = this;
         PacketEvents.getAPI().init();
         dataManager = new DataManager();
+        targetTracker = new TargetTracker();
         CheckManager checkManager = new CheckManager(this);
 
         Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
@@ -37,6 +41,11 @@ public final class Anticheat extends JavaPlugin {
                 new MoveListener(), PacketListenerPriority.LOWEST);
 
         checkManager.registerChecks();
+
+        // Detects server-process freezes so the Blink check can ignore packet bursts
+        // that are caused by the server catching up rather than by client withholding.
+        Bukkit.getScheduler().runTaskTimer(this, new ServerTick(), 0L, 1L);
+
         getCommand("ping").setExecutor(new PingCommand());
     }
 
