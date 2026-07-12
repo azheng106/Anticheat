@@ -1,7 +1,7 @@
 This is a plugin to detect cheaters in Minecraft.
 YouTube series: https://youtu.be/2g_8jg9vw3Q
 
-Check explanations:
+Check explanations for first few episodes (the later episodes go more in-depth into explanation):
 
 **KillauraA:**
 
