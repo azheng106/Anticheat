@@ -1,4 +1,5 @@
 ## AntiCheat Plugin - Minecraft 🚀
+
 Basic `1.8x` plugin to detect cheaters in Minecraft Java Edition using the [PacketEvents](https://docs.packetevents.com/) library.
 
 > 📖 The original YouTube series can be found on [YouTube](https://youtu.be/2g_8jg9vw3Q)
