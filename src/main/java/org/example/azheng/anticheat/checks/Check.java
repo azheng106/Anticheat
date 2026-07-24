@@ -23,4 +23,23 @@ public abstract class Check implements Listener, PacketListener {
                     ChatColor.RED + this.name + ChatColor.LIGHT_PURPLE + " (" + formattedInfo + ")");
         }
     }
+
+    public void flagClientInfo(Player target, String version, String clientBrand, String... information) {
+        StringBuilder formattedInfo = new StringBuilder();
+
+        for (String str : information) {
+            formattedInfo.append(str
+                    .replace("%client%", clientBrand)
+                    .replace("%version%", version));
+        }
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(ChatColor.AQUA + target.getName() +
+                    ChatColor.GRAY + " has joined using " +
+                    ChatColor.LIGHT_PURPLE + clientBrand +
+                    ChatColor.GRAY + " (" +
+                    ChatColor.RED + version +
+                    ChatColor.GRAY + ")");
+        }
+    }
 }

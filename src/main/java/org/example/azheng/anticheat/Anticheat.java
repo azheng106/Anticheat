@@ -6,8 +6,11 @@ import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.azheng.anticheat.checks.CheckManager;
+import org.example.azheng.anticheat.checks.packet.client.ClientBrand;
+import org.example.azheng.anticheat.checks.packet.client.ClientVersion;
 import org.example.azheng.anticheat.commands.PingCommand;
 import org.example.azheng.anticheat.data.DataManager;
+import org.example.azheng.anticheat.listeners.ClientInfoListener;
 import org.example.azheng.anticheat.listeners.JoinLeaveListener;
 import org.example.azheng.anticheat.listeners.MoveListener;
 import org.example.azheng.anticheat.listeners.RotationListener;
@@ -35,10 +38,19 @@ public final class Anticheat extends JavaPlugin {
         CheckManager checkManager = new CheckManager(this);
 
         Bukkit.getPluginManager().registerEvents(new JoinLeaveListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ClientInfoListener(), this);
+
         PacketEvents.getAPI().getEventManager().registerListener(
                 new RotationListener(), PacketListenerPriority.LOWEST);
         PacketEvents.getAPI().getEventManager().registerListener(
                 new MoveListener(), PacketListenerPriority.LOWEST);
+
+        // Client Brand Information
+        PacketEvents.getAPI().getEventManager().registerListener(
+                new ClientBrand(), PacketListenerPriority.NORMAL);
+
+        PacketEvents.getAPI().getEventManager().registerListener(
+                new ClientVersion(), PacketListenerPriority.NORMAL);
 
         checkManager.registerChecks();
 
